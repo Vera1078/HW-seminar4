@@ -1,106 +1,50 @@
 ﻿// Задача 29: Напишите программу, которая задаёт массив из введенного числа и выводит их на экран.
-// пользователь вводит число элементов в массиве, минимальное и максимальное значение.
-// Надо заполнить массив рандоными данными от минимального до максимального значения.
-// И важное уточнениее - делать все в методе который возвращает массив
+// пользователь вводит число элементов в массиве и минимальное, и максимальное значение.
+// Надо заполнить массив рандоными данными от минимального до максимального значение.
+// И важное уточнениее: делать все в методе, который возвращает массив.
 // 1, 2, 5, 7, 19 -> [1, 2, 5, 7, 19]
 // 6, 1, 33 -> [6, 1, 33]
 
-Console.WriteLine("Запустим метод, который создаст массив из введенных данных.");
-Console.WriteLine("Задайте длину массива(целое число): ");
-
-// Вызовем метод
-MyMass(Console.ReadLine());
-
-int[] MyMass(string? data)
+int[] RandomArray()
 {
-    int len, start, final;
+    Console.Write("Enter quantity of array...");
+    int arraySize = Math.Abs(Convert.ToInt32(Console.ReadLine()));
 
-    // Парсим в цикле ввод для всех данных: размерность массива, минимальное и максимальное значение элементов
-    while(true)
+    int[] arr = new int[arraySize];
+
+    Console.Write("Enter minimum value of array...");
+    int minNum = Convert.ToInt32(Console.ReadLine());
+    
+    Console.Write("Enter maximum value of array...");
+    int maxNum = Convert.ToInt32(Console.ReadLine());
+
+    for (int i = 0; i <= arraySize - 1; i++)
     {
-        if(int.TryParse(data, out len))
-        {   
-            len = Math.Abs(len);
-            Console.WriteLine("Задайте Min элементов массива: ");
-            data = Console.ReadLine();
-            
-            while(true)
-            {
-                if(int.TryParse(data, out start))
-                {
-                    Console.WriteLine("Задайте Max элементов массива: ");
-                    data = Console.ReadLine();
-
-                    while(true)
-                    {
-                        if(int.TryParse(data, out final))
-                        {
-                            while(final < start)
-                            {
-                                Console.WriteLine("Max меньше Min. Измените значение Max:");
-                                data = Console.ReadLine();
-                                while(true)
-                                {
-                                    if(int.TryParse(data, out final))
-                                    {
-                                        break;
-                                    }
-                                    else{
-                                        Console.WriteLine("Ошибка ввода, задайте Max");
-                                        data = Console.ReadLine();
-                                    }
-                                }
-                            }
-                            break;   
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ошибка ввода, задайте Max");
-                            data = Console.ReadLine();
-                        }
-                    }
-                    break;    
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка ввода, задайте Min: ");
-                    data = Console.ReadLine();
-                }
-            }
-            break;   
-        }
-        else
-        {
-            Console.WriteLine("Ошибка ввода, задайте длину массива(целое число): ");
-            data = Console.ReadLine();
-        }
+        if (minNum <= maxNum) arr[i] = new Random().Next(minNum, maxNum + 1);
+        else arr[i] = new Random().Next(maxNum, minNum + 1);
     }
 
-    // Показываем, какие данные собрали
-    Console.WriteLine($"Есть длина {len}, минимум {start} и максимум {final}");
-
-    // Объявляем новый массив с размерностью len
-    int[] array = new int[len];
-
-    // Записываем значения элементов и отображаем массив в консоли
-    Console.Write("Массив с элементами:");
-
-    for(int i = 0; i < array.Length; i++)
-    {
-        array[i] = new Random().Next(start, final);
-
-        // Убираем запятую для последнего индекса
-        if(i == len - 1)
-        {
-            Console.Write($"[{array[i]}]");
-        }
-        else
-        {
-           Console.Write($"[{array[i]}],"); 
-        }
-        
-    }
-
-    return array;
+    return arr;
 }
 
+void SortAndPrintArray(int[] arr)
+{
+    for (int i = 0; i < arr.Length; i++)
+    {
+        int min = i;
+        for (int j = i + 1; j < arr.Length; j++)
+        {
+            if (arr[min] > arr[j]) min = j;
+        }
+
+        int temp = arr[min];
+        arr[min] = arr[i];
+        arr[i] = temp;
+
+        if (i == arr.Length - 1) Console.Write($"{arr[i]} ");
+        else Console.Write($"{arr[i]}, ");
+    }
+}
+
+int[] array = RandomArray();
+SortAndPrintArray(array);
